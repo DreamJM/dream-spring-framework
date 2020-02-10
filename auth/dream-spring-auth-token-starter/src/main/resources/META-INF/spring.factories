@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.dream.springframework.auth.token.DreamAuthTokenAutoConfiguration,\
+com.dream.springframework.auth.base.configuration.ArgumentResolverConfiguration

@@ -1,0 +1,27 @@
+spring:
+  messages:
+    basename: i18n/messages,i18n/errors
+    fallback-to-system-locale: false
+  datasource:
+    platform: h2
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./h2/demo
+    username: root
+    password: 123456
+    sql-script-encoding: UTF-8
+
+pagehelper:
+  helper-dialect: h2
+
+dream:
+  framework:
+    swagger:
+      base-package: com.dream.springframework.demo
+      title: Demo API
+      version: v1
+    access-limit-enabled: true
+    executor:
+      thread-name-prefix: Demo-Task-
+    i18n:
+      locale-resolver: cookie
+      cookie-max-age: 30d

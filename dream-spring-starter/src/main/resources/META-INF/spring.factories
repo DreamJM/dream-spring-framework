@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.dream.springframework.DreamFrameworkAutoConfiguration,\
+com.dream.springframework.base.interceptor.DreamInterceptorAutoConfiguration,\
+com.dream.springframework.base.swagger.DreamSwaggerAutoConfiguration

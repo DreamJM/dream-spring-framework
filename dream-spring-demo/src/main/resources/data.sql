@@ -1,0 +1,1 @@
+MERGE INTO demo(id, name, greeting) VALUES(1, 'jm', 'hello');
