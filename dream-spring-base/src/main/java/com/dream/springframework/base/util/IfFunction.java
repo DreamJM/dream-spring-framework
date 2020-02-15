@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  * Combines with lambda expression to substitute 'if else' or 'switch case'.
  * <p>Example:
  * <pre class="code">
- * IfFunction&lt;Integer, String&rt; func = new IfFunction&lt;&rt;();
+ * IfFunction&lt;Integer, String&gt; func = new IfFunction&lt;&gt;();
  * func.add(1, System.out::println).add(2, this::doSomething);
  * func.doIf(1, "hello");
  * func.doIf(2, "hello");

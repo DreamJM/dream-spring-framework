@@ -51,7 +51,7 @@ public class Order {
     /**
      * Order
      * <p>
-     * Ascending Order: {@link #ORDER_ASC 0}<br/>
+     * Ascending Order: {@link #ORDER_ASC 0}<br>
      * Descending Order: {@link #ORDER_DESC 1}
      *
      * @see #ORDER_ASC
@@ -72,7 +72,7 @@ public class Order {
     }
 
     /**
-     * Ascending Order: {@link #ORDER_ASC 0}<br/>
+     * Ascending Order: {@link #ORDER_ASC 0}<br>
      * Descending Order: {@link #ORDER_DESC 1}
      *
      * @return order
@@ -101,6 +101,7 @@ public class Order {
      * Format: [orderBy][paramSplitter][order]
      *
      * @param orderStr order string([orderBy][paramSplitter][order])
+     * @param paramSplitter parameter splitter
      * @return order information
      */
     public static Order parseOrder(String orderStr, String paramSplitter) {
@@ -132,7 +133,9 @@ public class Order {
      * <p>
      * Format: [orderBy1][paramSplitter][order1][itemSplitter][orderBy2][paramSplitter][order2]
      *
-     * @param orderStr order string([orderBy1][paramSplitter][order1][itemSplitter][orderBy2][paramSplitter][order2])
+     * @param orderStr      order string([orderBy1][paramSplitter][order1][itemSplitter][orderBy2][paramSplitter][order2])
+     * @param paramSplitter specified param splitter
+     * @param itemSplitter  specified item splitter
      * @return orders information
      */
     public static List<Order> parseOrders(String orderStr, String paramSplitter, String itemSplitter) {

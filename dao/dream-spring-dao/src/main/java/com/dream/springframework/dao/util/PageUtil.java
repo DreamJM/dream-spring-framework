@@ -44,7 +44,7 @@ public class PageUtil {
     /**
      * Starts paging with {@link PageHelper}
      * <p>
-     * Uses default page size when page size is null.<br/>
+     * Uses default page size when page size is null.<br>
      * Skip paging when page number is null;
      *
      * @param pageNum  page number

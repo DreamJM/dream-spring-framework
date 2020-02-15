@@ -50,7 +50,7 @@ public class DreamDaoAutoConfiguration {
     /**
      * Query condition aspect to apply paging or ordering parameters using {@link com.github.pagehelper.PageHelper}
      *
-     * <p>Supports {@link com.dream.springframework.dao.annotation.QueryCondition}<br/>
+     * <p>Supports {@link com.dream.springframework.dao.annotation.QueryCondition}<br>
      *
      * @return query condition aspect
      */

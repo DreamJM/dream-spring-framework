@@ -20,8 +20,9 @@ import com.dream.springframework.base.exception.BaseErrorCode;
 import com.dream.springframework.base.model.Result;
 
 /**
- * Error Code that will result in {@link Result#getCode()}.
- * <ul>Codes are between 0 and 5999
+ * Error Code that will result in {@link Result#getCode()}.<br>
+ * Codes are between 0 and 5999
+ * <ul>
  * <li>0-999 are designed for Success or partial Success (1-899 are remained for user, others are reserved for framework)</li>
  * <li>1000-1999 are designed for Parameter error (1001-1899 are remained for user, others are reserved for framework)</li>
  * <li>2000-2999 are designed for Authentication error (2001-2899 are remained for user, others are reserved for framework)</li>

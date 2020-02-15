@@ -88,6 +88,7 @@ public class ActionLogAutoConfiguration {
      * @param actionLogExecutor     executor to store and serialize action log
      * @param mapper                jackson mapper for serialization
      * @return aop aspect to collect, serialize and store action information
+     * @throws IllegalAccessException Reflection Error
      */
     @Bean
     public ActionLogAspect actionLogAspect(ActionLogCreationRepo actionLogCreationRepo, Executor actionLogExecutor, ObjectMapper mapper)

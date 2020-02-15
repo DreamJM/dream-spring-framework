@@ -214,7 +214,7 @@ public class DreamFrameworkAutoConfiguration implements WebMvcConfigurer {
     /**
      * Creates concurrent access limitation aspect.
      *
-     * <p>Supports {@link com.dream.springframework.base.annotation.AccessLimit}.<br/>
+     * <p>Supports {@link com.dream.springframework.base.annotation.AccessLimit}.<br>
      * Takes effect when 'dream.framework.access-limit-enabled' is set to true and 'spring-boot-starter-aop' is added to dependencies
      *
      * @return concurrent access limitation aspect

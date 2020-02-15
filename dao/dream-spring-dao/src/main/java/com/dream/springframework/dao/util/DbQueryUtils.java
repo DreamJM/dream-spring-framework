@@ -65,6 +65,7 @@ public class DbQueryUtils {
      * @param <R>       Result Item type
      * @param <E>       Specified exception when handling
      * @return Page of result
+     * @throws E Exception when handling
      */
     public static <T extends BaseCondition, R, E extends Throwable> Page<R> applyQueryConditionEx(T condition,
                                                                                                   ExFunction<T, Page<R>, E> queryFunc)
@@ -90,6 +91,7 @@ public class DbQueryUtils {
      * @param <T>       Query condition type
      * @param <R>       Result Item type
      * @return Page of result
+     * @throws Throwable Exception when handling
      */
     public static <T extends BaseCondition, R> Page<R> applyQueryConditionThrowable(T condition,
                                                                                     ExFunction<T, Page<R>, Throwable> queryFunc)

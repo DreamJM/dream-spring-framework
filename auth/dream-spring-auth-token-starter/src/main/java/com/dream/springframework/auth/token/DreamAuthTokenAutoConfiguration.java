@@ -81,6 +81,7 @@ public class DreamAuthTokenAutoConfiguration implements WebMvcConfigurer {
 
     /**
      * @param orgPermissionProvider ObjectProvider for organization resource access permission checking service
+     * @param request               Http Servlet Request delegate
      * @return organization check advice
      */
     @Bean

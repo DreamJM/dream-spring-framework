@@ -344,8 +344,8 @@ public class DreamFrameworkProperties {
         /**
          * Locale resolver
          * <p>
-         * default: Use HTTP Accept-Language header to define locale<br/>
-         * session: Use 'lang' request parameter to initialize session locale<br/>
+         * default: Use HTTP Accept-Language header to define locale<br>
+         * session: Use 'lang' request parameter to initialize session locale<br>
          * cookie: Use 'lang' request parameter to initialize locale(store in cookie)
          */
         private LocaleResolverType localeResolver = LocaleResolverType.DEFAULT;
@@ -395,8 +395,8 @@ public class DreamFrameworkProperties {
         }
 
         /**
-         * default: Use HTTP Accept-Language header to define locale<br/>
-         * session: Use 'lang' request parameter to initialize session locale<br/>
+         * default: Use HTTP Accept-Language header to define locale<br>
+         * session: Use 'lang' request parameter to initialize session locale<br>
          * cookie: Use 'lang' request parameter to initialize locale(store in cookie)
          *
          * @param localeResolver Locale Resolver Type to set

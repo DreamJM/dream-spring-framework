@@ -35,6 +35,7 @@ public interface AuthenticationService<T extends BaseAuthUser> {
      *
      * @param request http request
      * @return authenticated user information
+     * @throws RequestException authentication exception
      */
     T authenticate(HttpServletRequest request) throws RequestException;
 

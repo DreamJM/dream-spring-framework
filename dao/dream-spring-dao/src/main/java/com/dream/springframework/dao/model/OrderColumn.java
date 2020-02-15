@@ -35,7 +35,7 @@ public class OrderColumn {
      * <p>
      * If null, the order specified by the original request {@link Order#getOrder() order} will be used for ordering
      * <p>
-     * Ascending Order: {@link Order#ORDER_ASC 0}<br/>
+     * Ascending Order: {@link Order#ORDER_ASC 0}<br>
      * Descending Order: {@link Order#ORDER_DESC 1}
      *
      * @see Order#ORDER_ASC
@@ -109,7 +109,7 @@ public class OrderColumn {
     /**
      * If null, the order specified by the original request {@link Order#getOrder() order} will be used for ordering
      * <p>
-     * Ascending Order: {@link Order#ORDER_ASC 0}<br/>
+     * Ascending Order: {@link Order#ORDER_ASC 0}<br>
      * Descending Order: {@link Order#ORDER_DESC 1}
      *
      * @return order

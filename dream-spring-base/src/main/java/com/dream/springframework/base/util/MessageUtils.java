@@ -50,8 +50,8 @@ public class MessageUtils {
 
     /**
      * Sets the locale forcibly for message.
-     * <p/>If not set or set null, {@link LocaleContextHolder#getLocale()} will be used for i18n
-     *
+     * <p>If not set or set null, {@link LocaleContextHolder#getLocale()} will be used for i18n
+     *N
      * @param locale locale of i18n
      */
     public static void setLocale(Locale locale) {
@@ -94,7 +94,7 @@ public class MessageUtils {
     /**
      * Gets the i18n error message for the specified error code.
      * <p>
-     * Code specified in i18n properties files should start with 'code.'<br/>
+     * Code specified in i18n properties files should start with 'code.'<br>
      * eg: code.4000=Data Not Found
      *
      * @param code   Error code

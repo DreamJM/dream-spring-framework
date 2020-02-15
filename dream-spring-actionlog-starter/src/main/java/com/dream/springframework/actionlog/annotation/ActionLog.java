@@ -41,7 +41,7 @@ public @interface ActionLog {
     /**
      * Action content abbreviated information.
      * <p>
-     * Each action log hint represents an attribute that action concerned. Hints will be joined by ','.<br/>
+     * Each action log hint represents an attribute that action concerned. Hints will be joined by ','.<br>
      * For example: name:xxx, age:18
      *
      * @return action content abbreviated information
