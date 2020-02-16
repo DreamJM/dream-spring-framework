@@ -117,15 +117,15 @@ public class ActionLogAspect {
                             hintContent = value.toString();
                         }
                         if (sb.length() > 0) {
-                            sb.append(",");
+                            sb.append(',');
                         }
                         if (i18nEnabled) {
-                            sb.append(MessageUtils.get(hint.name(), locale)).append(":").append(hintContent);
+                            sb.append(MessageUtils.get(hint.name(), locale)).append(':').append(hintContent);
                         } else {
-                            sb.append(hint.name()).append(":").append(hintContent);
+                            sb.append(hint.name()).append(':').append(hintContent);
                         }
                     } catch (Exception ex) {
-                        logger.error(ex.getMessage(), ex);
+                        logger.error("ActionLogHint annotation parse error!", ex);
                     }
                 }
                 entity.setHints(sb.toString());

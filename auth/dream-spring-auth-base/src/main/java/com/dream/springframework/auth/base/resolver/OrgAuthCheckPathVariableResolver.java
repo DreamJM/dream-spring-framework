@@ -46,8 +46,8 @@ public class OrgAuthCheckPathVariableResolver extends PathVariableMethodArgument
         if (orgAuthCheck != null && parameter.getMethod() != null) {
             BaseAuthUser authUser = (BaseAuthUser) request.getAttribute(BaseAuthUser.USER_KEY, RequestAttributes.SCOPE_REQUEST);
             if (authUser != null) {
-                RequiredAuthorities authAnnotation = parameter.getMethod().getAnnotation(RequiredAuthorities.class);
-                RequiredRoles roleAnnotation = parameter.getMethod().getAnnotation(RequiredRoles.class);
+                RequiredAuthorities authAnnotation = parameter.getMethodAnnotation(RequiredAuthorities.class);
+                RequiredRoles roleAnnotation = parameter.getMethodAnnotation(RequiredRoles.class);
                 service.authorize(authUser, result == null ? null : String.valueOf(result), authAnnotation, roleAnnotation);
             }
         }

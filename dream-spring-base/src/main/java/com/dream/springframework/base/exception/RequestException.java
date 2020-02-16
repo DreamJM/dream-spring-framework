@@ -41,6 +41,16 @@ public class RequestException extends Exception {
         this.code = code;
     }
 
+    public RequestException(int code, Throwable cause) {
+        super(MessageUtils.getError(code), cause);
+        this.code = code;
+    }
+
+    public RequestException(int code, Throwable cause, Object[] params) {
+        super(MessageUtils.getError(code, params), cause);
+        this.code = code;
+    }
+
     public RequestException(int code, String msg, Throwable throwable) {
         super(msg, throwable);
         this.code = code;

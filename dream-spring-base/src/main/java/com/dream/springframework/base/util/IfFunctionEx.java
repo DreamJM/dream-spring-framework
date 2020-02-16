@@ -41,7 +41,7 @@ public class IfFunctionEx<K, V, E extends Exception> {
      * @return IfFunction object for chain
      */
     public IfFunctionEx<K, V, E> add(K key, ExConsumer<V, E> function) {
-        this.map.put(key, function);
+        map.put(key, function);
         return this;
     }
 
@@ -53,8 +53,9 @@ public class IfFunctionEx<K, V, E extends Exception> {
      * @throws E exception when handling
      */
     public void doIf(K key, V value) throws E {
-        if (this.map.containsKey(key)) {
-            map.get(key).accept(value);
+        ExConsumer<V, E> consumer = map.get(key);
+        if (consumer != null) {
+            consumer.accept(value);
         }
     }
 
@@ -67,8 +68,9 @@ public class IfFunctionEx<K, V, E extends Exception> {
      * @throws E exception when handling
      */
     public void doIfWithDefault(K key, V value, Consumer<V> defaultFunction) throws E {
-        if (this.map.containsKey(key)) {
-            map.get(key).accept(value);
+        ExConsumer<V, E> consumer = map.get(key);
+        if (consumer != null) {
+            consumer.accept(value);
         } else {
             defaultFunction.accept(value);
         }

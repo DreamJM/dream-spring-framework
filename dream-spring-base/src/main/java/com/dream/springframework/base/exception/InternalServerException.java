@@ -28,6 +28,10 @@ public class InternalServerException extends RuntimeException {
 
     private int code;
 
+    public InternalServerException() {
+        this(BaseErrorCode.SYS_ERROR);
+    }
+
     public InternalServerException(int code) {
         this(code, MessageUtils.getError(code));
     }
@@ -38,6 +42,16 @@ public class InternalServerException extends RuntimeException {
 
     public InternalServerException(int code, String msg) {
         super(msg);
+        this.code = code;
+    }
+
+    public InternalServerException(int code, Throwable cause) {
+        super(MessageUtils.getError(code), cause);
+        this.code = code;
+    }
+
+    public InternalServerException(int code, Throwable cause, Object[] params) {
+        super(MessageUtils.getError(code, params), cause);
         this.code = code;
     }
 

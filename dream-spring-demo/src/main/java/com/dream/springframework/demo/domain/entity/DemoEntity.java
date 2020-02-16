@@ -38,12 +38,6 @@ public class DemoEntity {
         this.greeting = greeting;
     }
 
-    public DemoEntity(Demo demo) {
-        this.id = demo.getId();
-        this.name = demo.getName();
-        this.greeting = demo.getGreeting();
-    }
-
     public Long getId() {
         return id;
     }

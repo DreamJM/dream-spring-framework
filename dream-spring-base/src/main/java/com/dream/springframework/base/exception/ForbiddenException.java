@@ -38,6 +38,14 @@ public class ForbiddenException extends RequestException {
         super(code, msg);
     }
 
+    public ForbiddenException(int code, Throwable cause) {
+        super(code, cause);
+    }
+
+    public ForbiddenException(int code, Throwable cause, Object[] params) {
+        super(code, cause, params);
+    }
+
     public ForbiddenException(int code, String msg, Throwable throwable) {
         super(code, msg, throwable);
     }

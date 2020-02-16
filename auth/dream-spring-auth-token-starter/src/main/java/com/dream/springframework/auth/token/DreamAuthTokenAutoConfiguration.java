@@ -18,7 +18,7 @@ package com.dream.springframework.auth.token;
 
 import com.dream.springframework.auth.base.component.AuthenticationInterceptor;
 import com.dream.springframework.auth.base.component.DefaultAuthorizationProvider;
-import com.dream.springframework.auth.base.component.DefaultAuthorizationService;
+import com.dream.springframework.auth.base.component.DefaultAuthorizationServiceImpl;
 import com.dream.springframework.auth.base.component.OrgCheckAdvice;
 import com.dream.springframework.auth.base.resolver.LoginUserHandlerMethodArgumentResolver;
 import com.dream.springframework.auth.base.service.AuthorizationProvider;
@@ -76,7 +76,7 @@ public class DreamAuthTokenAutoConfiguration implements WebMvcConfigurer {
     @ConditionalOnMissingBean
     @Bean
     public AuthorizationService authorizationService() {
-        return new DefaultAuthorizationService(properties, authorizationProvider());
+        return new DefaultAuthorizationServiceImpl(properties, authorizationProvider());
     }
 
     /**

@@ -76,7 +76,7 @@ public class BaseQueryBuilder<T extends BaseCondition> {
         if (orderColumnMap == null) {
             return;
         }
-        if (targetOrders == null || targetOrders.size() == 0) {
+        if (targetOrders == null || targetOrders.isEmpty()) {
             Order defaultOrder = getDefaultOrder();
             if (defaultOrder != null) {
                 targetOrders = Collections.singletonList(defaultOrder);

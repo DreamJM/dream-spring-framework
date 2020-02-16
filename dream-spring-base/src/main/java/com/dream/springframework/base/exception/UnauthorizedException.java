@@ -38,6 +38,14 @@ public class UnauthorizedException extends RequestException {
         super(code, msg);
     }
 
+    public UnauthorizedException(int code, Throwable cause) {
+        super(code, cause);
+    }
+
+    public UnauthorizedException(int code, Throwable cause, Object[] params) {
+        super(code, cause, params);
+    }
+
     public UnauthorizedException(int code, String msg, Throwable throwable) {
         super(code, msg, throwable);
     }

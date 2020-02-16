@@ -40,7 +40,7 @@ public enum Logical {
      * @return boolean binary operator
      */
     public BinaryOperator<Boolean> judge() {
-        if (this.equals(Logical.AND)) {
+        if (Logical.AND == this) {
             return (b1, b2) -> b1 && b2;
         } else {
             return (b1, b2) -> b1 || b2;

@@ -30,6 +30,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
@@ -62,7 +63,7 @@ public class OrgCheckAdvice extends RequestBodyAdviceAdapter {
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
-        if (methodParameter.getMethod() == null || methodParameter.getMethod().getAnnotation(AuthIgnore.class) != null) {
+        if (methodParameter.getMethod() == null || methodParameter.getMethodAnnotation(AuthIgnore.class) != null) {
             return false;
         }
         if (permissionService == null && !methodParameter.hasParameterAnnotation(OrgAuthorization.class)) {

@@ -20,17 +20,17 @@ import com.dream.springframework.auth.base.resolver.OrgAuthCheckPathVariableReso
 import com.dream.springframework.auth.base.resolver.OrgAuthCheckRequestParamResolver;
 import com.dream.springframework.auth.base.service.AuthenticationService;
 import com.dream.springframework.auth.base.service.AuthorizationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.PathVariableMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,21 +44,24 @@ import java.util.stream.Collectors;
 @Configuration
 public class ArgumentResolverConfiguration {
 
+    private static final Logger logger = LoggerFactory.getLogger(ArgumentResolverConfiguration.class);
+
     private RequestMappingHandlerAdapter adapter;
 
     private AuthorizationService service;
 
-    public ArgumentResolverConfiguration(RequestMappingHandlerAdapter adapter, AuthorizationService service) {
+    private ConfigurableBeanFactory beanFactory;
+
+    public ArgumentResolverConfiguration(RequestMappingHandlerAdapter adapter, AuthorizationService service,
+                                         ConfigurableBeanFactory beanFactory) {
         this.adapter = adapter;
         this.service = service;
+        this.beanFactory = beanFactory;
     }
 
     @PostConstruct
     public void init() {
         try {
-            Field beanFactoryField = RequestMappingHandlerAdapter.class.getDeclaredField("beanFactory");
-            beanFactoryField.setAccessible(true);
-            ConfigurableBeanFactory beanFactory = (ConfigurableBeanFactory) ReflectionUtils.getField(beanFactoryField, adapter);
             // Replaces default PathVariableMethodArgumentResolver and RequestParamMethodArgumentResolver to handle organization
             // based authorization
             final List<HandlerMethodArgumentResolver> resolvers = Objects.requireNonNull(adapter.getArgumentResolvers()).stream()
@@ -66,24 +69,15 @@ public class ArgumentResolverConfiguration {
                         if (PathVariableMethodArgumentResolver.class == resolver.getClass()) {
                             return new OrgAuthCheckPathVariableResolver(service);
                         } else if (RequestParamMethodArgumentResolver.class == resolver.getClass()) {
-                            try {
-                                RequestParamMethodArgumentResolver rpResolver = (RequestParamMethodArgumentResolver) resolver;
-                                Field resolutionField = RequestParamMethodArgumentResolver.class.getDeclaredField("useDefaultResolution");
-                                resolutionField.setAccessible(true);
-                                Boolean useDefaultResolution = (Boolean) ReflectionUtils.getField(resolutionField, rpResolver);
-                                if (useDefaultResolution != null) {
-                                    return new OrgAuthCheckRequestParamResolver(beanFactory, useDefaultResolution, service);
-                                }
-                            } catch (NoSuchFieldException e) {
-                                return resolver;
-                            }
+                            return new OrgAuthCheckRequestParamResolver(beanFactory, (RequestParamMethodArgumentResolver) resolver,
+                                    service);
                         }
                         return resolver;
                     })
                     .collect(Collectors.toList());
             adapter.setArgumentResolvers(resolvers);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            logger.error("Default Argument Resolver initialization error", e);
         }
     }
 

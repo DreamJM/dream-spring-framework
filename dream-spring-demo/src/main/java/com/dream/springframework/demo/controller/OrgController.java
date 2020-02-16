@@ -70,7 +70,7 @@ public class OrgController {
 
     @RequiredRoles("role3")
     @GetMapping("/api/org")
-    public Organ getOrgById(@RequestParam(required = false) String id) {
+    public Organ getOrgById(@OrgAuthorization @RequestParam(required = false) String id) {
         return new Organ(id);
     }
 

@@ -38,6 +38,14 @@ public class NotFoundException extends RequestException {
         super(code, msg);
     }
 
+    public NotFoundException(int code, Throwable cause) {
+        super(code, cause);
+    }
+
+    public NotFoundException(int code, Throwable cause, Object[] params) {
+        super(code, cause, params);
+    }
+
     public NotFoundException(int code, String msg, Throwable throwable) {
         super(code, msg, throwable);
     }

@@ -54,11 +54,11 @@ public class DemoService {
     }
 
     public Id insert(Demo demo) {
-        return new Id(repository.insert(new DemoEntity(demo)));
+        return new Id(repository.insert(new DemoEntity(demo.getId(), demo.getName(), demo.getGreeting())));
     }
 
     public void update(Demo demo) throws NotFoundException {
-        if (!repository.update(new DemoEntity(demo))) {
+        if (!repository.update(new DemoEntity(demo.getId(), demo.getName(), demo.getGreeting()))) {
             throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
         }
     }

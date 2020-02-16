@@ -46,7 +46,7 @@ public class IfFunction<K, V> {
      * @return IfFunction object for chain
      */
     public IfFunction<K, V> add(K key, Consumer<V> function) {
-        this.map.put(key, function);
+        map.put(key, function);
         return this;
     }
 
@@ -57,8 +57,9 @@ public class IfFunction<K, V> {
      * @param value data for consumer to accept
      */
     public void doIf(K key, V value) {
-        if (this.map.containsKey(key)) {
-            map.get(key).accept(value);
+        Consumer<V> consumer = map.get(key);
+        if (consumer != null) {
+            consumer.accept(value);
         }
     }
 
@@ -70,11 +71,7 @@ public class IfFunction<K, V> {
      * @param defaultFunction default consumer if consumer not found with key
      */
     public void doIfWithDefault(K key, V value, Consumer<V> defaultFunction) {
-        if (this.map.containsKey(key)) {
-            map.get(key).accept(value);
-        } else {
-            defaultFunction.accept(value);
-        }
+        map.getOrDefault(key, defaultFunction).accept(value);
     }
 
 }

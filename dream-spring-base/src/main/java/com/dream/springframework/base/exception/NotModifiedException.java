@@ -38,6 +38,14 @@ public class NotModifiedException extends RequestException {
         super(code, msg);
     }
 
+    public NotModifiedException(int code, Throwable cause) {
+        super(code, cause);
+    }
+
+    public NotModifiedException(int code, Throwable cause, Object[] params) {
+        super(code, cause, params);
+    }
+
     public NotModifiedException(int code, String msg, Throwable throwable) {
         super(code, msg, throwable);
     }

@@ -31,6 +31,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,7 +48,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
     private AuthorizationService authorizationService;
 
-    private Map<String, Boolean> orgCheckMethodMap = new ConcurrentHashMap<>();
+    private Map<Method, Boolean> orgCheckMethodMap = new ConcurrentHashMap<>();
 
     /**
      * @param authenticationService user authentication service
@@ -72,8 +73,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             roleAnnotation = method.getMethodAnnotation(RequiredRoles.class);
             // Caches and judge OrgAuthCheck Tag for methods
             if (authAnnotation != null || roleAnnotation != null) {
-                String methodStr = method.toString();
-                Boolean orgCheckBool = orgCheckMethodMap.get(methodStr);
+                Boolean orgCheckBool = orgCheckMethodMap.get(method.getMethod());
                 if (orgCheckBool != null) {
                     orgCheck = orgCheckBool;
                 } else {
@@ -82,7 +82,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                             orgCheck = true;
                         }
                     }
-                    orgCheckMethodMap.put(methodStr, orgCheck);
+                    orgCheckMethodMap.put(method.getMethod(), orgCheck);
                 }
             }
         } else {

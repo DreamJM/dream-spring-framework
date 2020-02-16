@@ -57,14 +57,14 @@ public abstract class BaseTokenAuthenticationService<T extends TokenAuthUser> im
         try {
             return parseToken(token);
         } catch (TokenExpiredException ex) {
-            throw new UnauthorizedException(BaseErrorCode.AUTH_EXPIRED);
+            throw new UnauthorizedException(BaseErrorCode.AUTH_EXPIRED, ex);
         } catch (TokenException ex) {
-            throw new ForbiddenException(BaseErrorCode.TOKEN_CHECK_ERROR);
+            throw new ForbiddenException(BaseErrorCode.TOKEN_CHECK_ERROR, ex);
         } catch (RequestException | InternalServerException ex) {
             throw ex;
         } catch (Throwable ex) {
             logger.error("Unexpected exception occurred!", ex);
-            throw new UnauthorizedException(BaseErrorCode.AUTH_FAILURE);
+            throw new UnauthorizedException(BaseErrorCode.AUTH_FAILURE, ex);
         }
     }
 

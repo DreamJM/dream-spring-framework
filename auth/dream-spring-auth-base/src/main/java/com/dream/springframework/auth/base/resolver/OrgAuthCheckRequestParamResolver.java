@@ -23,7 +23,6 @@ import com.dream.springframework.auth.base.annotation.RequiredRoles;
 import com.dream.springframework.auth.base.service.AuthorizationService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.MethodParameter;
-import org.springframework.lang.Nullable;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
@@ -37,12 +36,20 @@ import java.lang.reflect.Array;
  */
 public class OrgAuthCheckRequestParamResolver extends RequestParamMethodArgumentResolver {
 
+    private RequestParamMethodArgumentResolver resolver;
+
     private AuthorizationService service;
 
-    public OrgAuthCheckRequestParamResolver(@Nullable ConfigurableBeanFactory beanFactory, boolean useDefaultResolution,
+    public OrgAuthCheckRequestParamResolver(ConfigurableBeanFactory beanFactory, RequestParamMethodArgumentResolver resolver,
                                             AuthorizationService service) {
-        super(beanFactory, useDefaultResolution);
+        super(beanFactory, false);
+        this.resolver = resolver;
         this.service = service;
+    }
+
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return resolver.supportsParameter(parameter);
     }
 
     @Override
@@ -52,8 +59,8 @@ public class OrgAuthCheckRequestParamResolver extends RequestParamMethodArgument
         if (orgAuthCheck != null && parameter.getMethod() != null) {
             BaseAuthUser authUser = (BaseAuthUser) request.getAttribute(BaseAuthUser.USER_KEY, RequestAttributes.SCOPE_REQUEST);
             if (authUser != null) {
-                RequiredAuthorities authAnnotation = parameter.getMethod().getAnnotation(RequiredAuthorities.class);
-                RequiredRoles roleAnnotation = parameter.getMethod().getAnnotation(RequiredRoles.class);
+                RequiredAuthorities authAnnotation = parameter.getMethodAnnotation(RequiredAuthorities.class);
+                RequiredRoles roleAnnotation = parameter.getMethodAnnotation(RequiredRoles.class);
                 if (result == null) {
                     service.authorize(authUser, null, authAnnotation, roleAnnotation);
                 } else if (result.getClass().isArray()) {

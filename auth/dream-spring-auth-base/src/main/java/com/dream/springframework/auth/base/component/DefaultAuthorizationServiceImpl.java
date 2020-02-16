@@ -36,13 +36,13 @@ import java.util.Set;
  * @see RequiredAuthorities
  * @see RequiredRoles
  */
-public class DefaultAuthorizationService implements AuthorizationService {
+public class DefaultAuthorizationServiceImpl implements AuthorizationService {
 
     private DreamAuthProperties properties;
 
     private AuthorizationProvider provider;
 
-    public DefaultAuthorizationService(DreamAuthProperties properties, AuthorizationProvider provider) {
+    public DefaultAuthorizationServiceImpl(DreamAuthProperties properties, AuthorizationProvider provider) {
         this.properties = properties;
         this.provider = provider;
     }
@@ -77,7 +77,7 @@ public class DefaultAuthorizationService implements AuthorizationService {
             return;
         }
         if (authorities == null || !Arrays.stream(authAnnotation.value()).map(authorities::contains)
-                .reduce(authAnnotation.logical().judge()).orElse(false)) {
+                .reduce(authAnnotation.logical().judge()).orElse(Boolean.FALSE)) {
             throw new ForbiddenException(BaseErrorCode.ACCESS_DENY);
         }
     }
@@ -87,7 +87,7 @@ public class DefaultAuthorizationService implements AuthorizationService {
             return;
         }
         if (roles == null || !Arrays.stream(roleAnnotation.value()).map(roles::contains)
-                .reduce(roleAnnotation.logical().judge()).orElse(false)) {
+                .reduce(roleAnnotation.logical().judge()).orElse(Boolean.FALSE)) {
             throw new ForbiddenException(BaseErrorCode.ACCESS_DENY);
         }
     }
