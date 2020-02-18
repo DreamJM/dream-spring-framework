@@ -23,21 +23,22 @@ import com.dream.springframework.auth.base.model.CheckedOrgs;
 import java.lang.annotation.*;
 
 /**
- * Annotates on {@link org.springframework.web.bind.annotation.PathVariable}, {@link org.springframework.web.bind.annotation.RequestParam}
- * or {@link org.springframework.web.bind.annotation.RequestBody} annotated parameter which represents or contains organization identity
- * to check the authorities and roles.
+ * Annotate on {@link org.springframework.web.bind.annotation.PathVariable}, {@link org.springframework.web.bind.annotation.RequestParam},
+ * {@link org.springframework.web.bind.annotation.RequestBody} annotated parameter or method which represents or contains organization
+ * identity to check the authorities and roles.
  * <ul>
- * <li>This annotation should be used in combine with {@link RequiredAuthorities} or
- * {@link RequiredRoles} to check authorities or roles based on organization</li>
+ * <li>This annotation should be used in combine with {@link RequiredAuthorities} or {@link RequiredRoles} to check authorities or roles
+ * based on organization</li>
  * <li>{@link org.springframework.web.bind.annotation.PathVariable} or {@link org.springframework.web.bind.annotation.RequestParam}
  * annotated parameter that annotated with this annotation should represents the organization identity</li>
  * <li>{@link org.springframework.web.bind.annotation.RequestBody} annotated parameter that annotated with this annotation should
  * implement {@link CheckedOrg}, {@link CheckedOrgList} or {@link CheckedOrgs}</li>
+ * <li>when annotated on the method, the response object will be used to check authorities or roles</li>
  * </ul>
  *
  * @author DreamJM
  */
-@Target(ElementType.PARAMETER)
+@Target({ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface OrgAuthorization {

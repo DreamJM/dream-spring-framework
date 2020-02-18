@@ -16,10 +16,7 @@
 
 package com.dream.springframework.auth.token;
 
-import com.dream.springframework.auth.base.component.AuthenticationInterceptor;
-import com.dream.springframework.auth.base.component.DefaultAuthorizationProvider;
-import com.dream.springframework.auth.base.component.DefaultAuthorizationServiceImpl;
-import com.dream.springframework.auth.base.component.OrgCheckAdvice;
+import com.dream.springframework.auth.base.component.*;
 import com.dream.springframework.auth.base.resolver.LoginUserHandlerMethodArgumentResolver;
 import com.dream.springframework.auth.base.service.AuthorizationProvider;
 import com.dream.springframework.auth.base.service.AuthorizationService;
@@ -87,6 +84,17 @@ public class DreamAuthTokenAutoConfiguration implements WebMvcConfigurer {
     @Bean
     public OrgCheckAdvice orgCheckAdvice(ObjectProvider<OrgPermissionService<?>> orgPermissionProvider, HttpServletRequest request) {
         return new OrgCheckAdvice(orgPermissionProvider, authorizationService(), request);
+    }
+
+    /**
+     * @param orgPermissionProvider ObjectProvider for organization resource access permission checking service
+     * @param request               Http Servlet Request delegate
+     * @return organization response check advice
+     */
+    @Bean
+    public OrgRespCheckAdvice orgRespCheckAdvice(ObjectProvider<OrgPermissionService<?>> orgPermissionProvider,
+                                                 HttpServletRequest request) {
+        return new OrgRespCheckAdvice(orgPermissionProvider, authorizationService(), request);
     }
 
     /**
