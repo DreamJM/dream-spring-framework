@@ -17,7 +17,6 @@
 package com.dream.springframework.demo.controller;
 
 import com.dream.springframework.auth.base.annotation.OrgAuthorization;
-import com.dream.springframework.auth.base.annotation.OrgPermissionIgnore;
 import com.dream.springframework.auth.base.annotation.RequiredAuthorities;
 import com.dream.springframework.auth.base.annotation.RequiredRoles;
 import com.dream.springframework.demo.model.OrgDemo;
@@ -28,8 +27,8 @@ import com.dream.springframework.demo.service.OrgService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author DreamJM
@@ -74,4 +73,22 @@ public class OrgController {
         return new Organ(id);
     }
 
+    @GetMapping("/api/org-rsp")
+    public OrgDemo testRespOrg(@RequestParam String orgId) {
+        OrgDemo orgDemo = new OrgDemo();
+        orgDemo.setOrgId(orgId);
+        return orgDemo;
+    }
+
+    @RequiredAuthorities("auth3")
+    @GetMapping("/api/orgs-rsp")
+    public @OrgAuthorization List<OrgDemo> testRespOrg(@RequestParam String[] orgIds) {
+        List<OrgDemo> orgs = new ArrayList<>();
+        for (String orgId : orgIds) {
+            OrgDemo orgDemo = new OrgDemo();
+            orgDemo.setOrgId(orgId);
+            orgs.add(orgDemo);
+        }
+        return orgs;
+    }
 }
