@@ -19,6 +19,7 @@ package com.dream.springframework;
 import com.dream.springframework.base.access.AccessLimitAspect;
 import com.dream.springframework.base.exception.BaseExceptionHandlerAdvice;
 import com.dream.springframework.base.util.EventPubUtils;
+import com.dream.springframework.base.util.JacksonUtils;
 import com.dream.springframework.base.util.MessageUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
@@ -209,6 +210,18 @@ public class DreamFrameworkAutoConfiguration implements WebMvcConfigurer {
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
         return objectMapper;
+    }
+
+    /**
+     * Global Jackson Util
+     *
+     * @param mapper jackson object mapper
+     * @return Jackson Global Util
+     */
+    @Bean
+    @ConditionalOnBean(ObjectMapper.class)
+    public JacksonUtils jacksonUtils(ObjectMapper mapper) {
+        return new JacksonUtils(mapper);
     }
 
     /**

@@ -28,6 +28,8 @@ public class RequestException extends Exception {
 
     private int code;
 
+    private Object data;
+
     public RequestException(int code) {
         this(code, MessageUtils.getError(code));
     }
@@ -62,5 +64,13 @@ public class RequestException extends Exception {
 
     public HttpStatus getStatus() {
         return HttpStatus.BAD_REQUEST;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

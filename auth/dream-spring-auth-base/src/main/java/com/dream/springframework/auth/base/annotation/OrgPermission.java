@@ -25,10 +25,8 @@ import java.lang.annotation.*;
 /**
  * Annotate on {@link org.springframework.web.bind.annotation.PathVariable}, {@link org.springframework.web.bind.annotation.RequestParam},
  * {@link org.springframework.web.bind.annotation.RequestBody} annotated parameter or method which represents or contains organization
- * identity to check the authorities and roles.
+ * identity to check the resource permission.
  * <ul>
- * <li>This annotation should be used in combine with {@link RequiredAuthorities} or {@link RequiredRoles} to check authorities or roles
- * based on organization</li>
  * <li>{@link org.springframework.web.bind.annotation.PathVariable} or {@link org.springframework.web.bind.annotation.RequestParam}
  * annotated parameter that annotated with this annotation should represents the organization identity</li>
  * <li>{@link org.springframework.web.bind.annotation.RequestBody} annotated parameter that annotated with this annotation should
@@ -41,5 +39,15 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface OrgAuthorization {
+public @interface OrgPermission {
+
+    /**
+     * Whether to skip checking of the {@code null} organization or empty list.
+     * <p>
+     * If true, checking will be skipped while null or empty. Else {@link com.dream.springframework.base.exception.ForbiddenException} will
+     * be thrown with code {@link com.dream.springframework.base.exception.BaseErrorCode#EMPTY_ORG_FORBIDDEN}
+     *
+     * @return Whether to skip checking of the {@code null} organization or empty list.
+     */
+    boolean skipEmpty() default false;
 }

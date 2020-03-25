@@ -180,38 +180,38 @@ public class ActionLogAspect {
         String[] names = nameValue.split("[.]");
         Object targetObj = ob;
         for (String name : names) {
-            if (ob instanceof List) {
-                List<?> list = (List<?>) ob;
+            if (targetObj instanceof List) {
+                List<?> list = (List<?>) targetObj;
                 if (PATTERN_NUMBER.matcher(name).matches()) {
                     int index = Integer.parseInt(name);
                     targetObj = list.get(index);
                 } else {
                     targetObj = getCollectionFieldValues(list, name);
                 }
-            } else if (ob instanceof Collection) {
-                Collection<?> collection = (Collection<?>) ob;
+            } else if (targetObj instanceof Collection) {
+                Collection<?> collection = (Collection<?>) targetObj;
                 if (PATTERN_NUMBER.matcher(name).matches()) {
                     int index = Integer.parseInt(name);
                     targetObj = collection.toArray()[index];
                 } else {
                     targetObj = getCollectionFieldValues(collection, name);
                 }
-            } else if (ob.getClass().isArray()) {
+            } else if (targetObj.getClass().isArray()) {
                 if (PATTERN_NUMBER.matcher(name).matches()) {
                     int index = Integer.parseInt(name);
-                    targetObj = Array.get(ob, index);
+                    targetObj = Array.get(targetObj, index);
                 } else {
                     ArrayList<Object> tempObj = new ArrayList<>();
-                    for (int i = 0; i < Array.getLength(ob); i++) {
-                        Object itemValue = getDirectFieldValue(Array.get(ob, i), name);
+                    for (int i = 0; i < Array.getLength(targetObj); i++) {
+                        Object itemValue = getDirectFieldValue(Array.get(targetObj, i), name);
                         if (itemValue != null) {
                             tempObj.add(itemValue);
                         }
                     }
                     targetObj = tempObj;
                 }
-            } else if (ob instanceof Map) {
-                Map<?, ?> map = (Map<?, ?>) ob;
+            } else if (targetObj instanceof Map) {
+                Map<?, ?> map = (Map<?, ?>) targetObj;
                 targetObj = map.get(name);
             } else {
                 targetObj = getDirectFieldValue(targetObj, name);

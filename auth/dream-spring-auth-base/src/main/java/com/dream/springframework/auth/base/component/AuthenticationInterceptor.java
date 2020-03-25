@@ -76,6 +76,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                 Boolean orgCheckBool = orgCheckMethodMap.get(method.getMethod());
                 if (orgCheckBool != null) {
                     orgCheck = orgCheckBool;
+                } else if (method.hasMethodAnnotation(OrgAuthorization.class)) {
+                    orgCheck = true;
                 } else {
                     for (MethodParameter parameter : method.getMethodParameters()) {
                         if (parameter.hasParameterAnnotation(OrgAuthorization.class)) {

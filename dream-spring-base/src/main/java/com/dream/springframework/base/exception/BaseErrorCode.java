@@ -47,9 +47,9 @@ public abstract class BaseErrorCode {
     public static final int DATA_NOT_MODIFIED = 901;
 
     /**
-     * Delete in bulk action partially succeed
+     * Bulk action partially succeed
      */
-    public static final int DELETE_PART_ERROR = 902;
+    public static final int PART_ERROR = 902;
 
     /*============ Parameter Error: 1000-1999 ============*/
 
@@ -126,6 +126,11 @@ public abstract class BaseErrorCode {
      * Error code for reaching the limitation of concurrent access count
      */
     public static final int ACCESS_LIMIT = 3902;
+
+    /**
+     * {@code null} organization or empty list of organization is forbidden while organization permission check
+     */
+    public static final int EMPTY_ORG_FORBIDDEN = 3903;
 
     /*============ Service Error: 4000-4999 ============*/
 

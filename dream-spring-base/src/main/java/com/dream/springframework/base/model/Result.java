@@ -86,4 +86,11 @@ public class Result<T> {
     public T getData() {
         return data;
     }
+
+    /**
+     * @param data Result data to set
+     */
+    public void setData(T data) {
+        this.data = data;
+    }
 }

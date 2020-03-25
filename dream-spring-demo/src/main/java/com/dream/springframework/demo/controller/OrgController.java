@@ -17,7 +17,7 @@
 package com.dream.springframework.demo.controller;
 
 import com.dream.springframework.auth.base.annotation.OrgAuthorization;
-import com.dream.springframework.auth.base.annotation.OrgPermissionIgnore;
+import com.dream.springframework.auth.base.annotation.OrgPermission;
 import com.dream.springframework.auth.base.annotation.RequiredAuthorities;
 import com.dream.springframework.auth.base.annotation.RequiredRoles;
 import com.dream.springframework.demo.model.OrgDemo;
@@ -28,8 +28,8 @@ import com.dream.springframework.demo.service.OrgService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author DreamJM
@@ -46,32 +46,51 @@ public class OrgController {
 
     @RequiredAuthorities("auth1")
     @PostMapping("/api/org")
-    public Organ updateOrg(@OrgAuthorization @RequestBody OrgDemo orgDemo) {
+    public Organ updateOrg(@OrgPermission @OrgAuthorization @RequestBody OrgDemo orgDemo) {
         return service.update(orgDemo);
     }
 
     @RequiredRoles("role1")
     @PostMapping("/api/orgs")
-    public List<Organ> updateOrgs(@OrgAuthorization @RequestBody OrgsDemo orgsDemo) {
+    public List<Organ> updateOrgs(@OrgPermission @OrgAuthorization @RequestBody OrgsDemo orgsDemo) {
         return service.updateOrgs(orgsDemo);
     }
 
     @RequiredAuthorities("auth1")
     @PostMapping("/api/org-list")
-    public Organ[] updateOrgs(@RequestBody OrgDemoList orgDemoList) {
+    public Organ[] updateOrgs(@OrgPermission @RequestBody OrgDemoList orgDemoList) {
         return service.updateOrgs(orgDemoList);
     }
 
     @RequiredAuthorities("auth3")
     @GetMapping("/api/orgs/{id}")
-    public Organ getOrg(@OrgAuthorization @PathVariable String id) {
+    public Organ getOrg(@OrgPermission @OrgAuthorization @PathVariable String id) {
         return new Organ(id);
     }
 
     @RequiredRoles("role3")
     @GetMapping("/api/org")
-    public Organ getOrgById(@OrgAuthorization @RequestParam(required = false) String id) {
+    public Organ getOrgById(@OrgPermission @OrgAuthorization @RequestParam(required = false) String id) {
         return new Organ(id);
     }
 
+    @OrgPermission
+    @GetMapping("/api/org-rsp")
+    public OrgDemo testRespOrg(@RequestParam String orgId) {
+        OrgDemo orgDemo = new OrgDemo();
+        orgDemo.setOrgId(orgId);
+        return orgDemo;
+    }
+
+    @RequiredAuthorities("auth3")
+    @GetMapping("/api/orgs-rsp")
+    public @OrgPermission @OrgAuthorization List<OrgDemo> testRespOrg(@RequestParam String[] orgIds) {
+        List<OrgDemo> orgs = new ArrayList<>();
+        for (String orgId : orgIds) {
+            OrgDemo orgDemo = new OrgDemo();
+            orgDemo.setOrgId(orgId);
+            orgs.add(orgDemo);
+        }
+        return orgs;
+    }
 }

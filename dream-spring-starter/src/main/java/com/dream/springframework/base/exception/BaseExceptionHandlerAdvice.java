@@ -44,6 +44,10 @@ public class BaseExceptionHandlerAdvice {
     public Result handleRequestException(RequestException ex, HttpServletResponse response) {
         response.setStatus(ex.getStatus().value());
         logger.warn("Error Returned with Code {} and Message {}", ex.getCode(), ex.getMessage());
+        Result<Object> result = new Result<>(ex.getCode(), ex.getMessage());
+        if (ex.getData() != null) {
+            result.setData(ex.getData());
+        }
         return new Result(ex.getCode(), ex.getMessage());
     }
 

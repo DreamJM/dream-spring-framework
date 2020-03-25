@@ -16,12 +16,14 @@
 
 package com.dream.springframework.auth.base.configuration;
 
-import com.dream.springframework.auth.base.resolver.OrgAuthCheckPathVariableResolver;
-import com.dream.springframework.auth.base.resolver.OrgAuthCheckRequestParamResolver;
+import com.dream.springframework.auth.base.resolver.OrgCheckPathVariableResolver;
+import com.dream.springframework.auth.base.resolver.OrgCheckRequestParamResolver;
 import com.dream.springframework.auth.base.service.AuthenticationService;
 import com.dream.springframework.auth.base.service.AuthorizationService;
+import com.dream.springframework.auth.base.service.OrgPermissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
@@ -48,14 +50,17 @@ public class ArgumentResolverConfiguration {
 
     private RequestMappingHandlerAdapter adapter;
 
-    private AuthorizationService service;
+    private AuthorizationService authService;
+
+    private OrgPermissionService<?> permissionService;
 
     private ConfigurableBeanFactory beanFactory;
 
-    public ArgumentResolverConfiguration(RequestMappingHandlerAdapter adapter, AuthorizationService service,
-                                         ConfigurableBeanFactory beanFactory) {
+    public ArgumentResolverConfiguration(RequestMappingHandlerAdapter adapter, AuthorizationService authService,
+                                         ObjectProvider<OrgPermissionService<?>> permissionService, ConfigurableBeanFactory beanFactory) {
         this.adapter = adapter;
-        this.service = service;
+        this.authService = authService;
+        this.permissionService = permissionService.getIfAvailable();
         this.beanFactory = beanFactory;
     }
 
@@ -64,17 +69,16 @@ public class ArgumentResolverConfiguration {
         try {
             // Replaces default PathVariableMethodArgumentResolver and RequestParamMethodArgumentResolver to handle organization
             // based authorization
-            final List<HandlerMethodArgumentResolver> resolvers = Objects.requireNonNull(adapter.getArgumentResolvers()).stream()
-                    .map(resolver -> {
+            final List<HandlerMethodArgumentResolver> resolvers =
+                    Objects.requireNonNull(adapter.getArgumentResolvers()).stream().map(resolver -> {
                         if (PathVariableMethodArgumentResolver.class == resolver.getClass()) {
-                            return new OrgAuthCheckPathVariableResolver(service);
+                            return new OrgCheckPathVariableResolver(authService, permissionService);
                         } else if (RequestParamMethodArgumentResolver.class == resolver.getClass()) {
-                            return new OrgAuthCheckRequestParamResolver(beanFactory, (RequestParamMethodArgumentResolver) resolver,
-                                    service);
+                            return new OrgCheckRequestParamResolver(beanFactory, (RequestParamMethodArgumentResolver) resolver,
+                                    authService, permissionService);
                         }
                         return resolver;
-                    })
-                    .collect(Collectors.toList());
+                    }).collect(Collectors.toList());
             adapter.setArgumentResolvers(resolvers);
         } catch (NullPointerException e) {
             logger.error("Default Argument Resolver initialization error", e);

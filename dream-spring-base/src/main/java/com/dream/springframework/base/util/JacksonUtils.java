@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.dream.springframework.auth.base.annotation;
+package com.dream.springframework.base.util;
 
-import com.dream.springframework.auth.base.model.CheckedOrg;
-import com.dream.springframework.auth.base.model.CheckedOrgList;
-import com.dream.springframework.auth.base.model.CheckedOrgs;
-
-import java.lang.annotation.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Skip organization resource access permission checking even if {@link CheckedOrg}, {@link CheckedOrgList} or {@link CheckedOrgs} is
- * implements as request parameter
+ * Global jackson util
  *
  * @author DreamJM
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface OrgPermissionIgnore {
+public class JacksonUtils {
+
+    private static ObjectMapper mapper;
+
+    public JacksonUtils(ObjectMapper mapper) {
+        JacksonUtils.mapper = mapper;
+    }
+
+    public static ObjectMapper getDefaultMapper() {
+        return mapper;
+    }
 }

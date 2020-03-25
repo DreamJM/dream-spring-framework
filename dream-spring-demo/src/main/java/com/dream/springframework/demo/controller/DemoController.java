@@ -98,7 +98,7 @@ public class DemoController {
     public Result<List<ErrorItem>> batchDeleteDemos(@RequestParam Long[] ids) {
         Result<List<ErrorItem>> result = new Result<>(BatchExecuteUtil.executeBatch(Arrays.asList(ids), this::deleteDemo));
         if (result.getData() != null && result.getData().size() > 0) {
-            result.setCode(BaseErrorCode.DELETE_PART_ERROR);
+            result.setCode(BaseErrorCode.PART_ERROR);
         }
         return result;
     }

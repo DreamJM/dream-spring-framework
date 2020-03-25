@@ -19,6 +19,7 @@ package com.dream.springframework.base.util;
 import com.dream.springframework.base.exception.BaseErrorCode;
 import com.dream.springframework.base.exception.RequestException;
 import com.dream.springframework.base.model.ErrorItem;
+import com.dream.springframework.base.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +59,32 @@ public class BatchExecuteUtil {
             }
         }
         return errors;
+    }
+
+    /**
+     * Composes batch action result to {@link Result}
+     *
+     * @param errors errors of batch action
+     * @return result with execution errors
+     */
+    public static Result<List<ErrorItem>> composeBatchResult(List<ErrorItem> errors) {
+        Result<List<ErrorItem>> result = new Result<>(errors);
+        if (!errors.isEmpty()) {
+            result.setCode(BaseErrorCode.PART_ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * Applies each value to the executor and collect execution errors to {@link Result}
+     *
+     * @param values   values to be executed on
+     * @param executor value action executor
+     * @param <T>      value type
+     * @return result with execution errors
+     */
+    public static <T> Result<List<ErrorItem>> executeBatchResult(List<T> values, ExConsumer<T, RequestException> executor) {
+        return composeBatchResult(executeBatch(values, executor));
     }
 
 }
