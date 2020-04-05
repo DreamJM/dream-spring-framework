@@ -436,7 +436,11 @@ public class DreamFrameworkProperties {
         /**
          * Use 'lang' request parameter to initialize locale(store in cookie)
          */
-        COOKIE
+        COOKIE,
+        /**
+         * Use 'lang' query parameter to initialize locale
+         */
+        QUERY
     }
 
 }

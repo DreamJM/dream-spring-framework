@@ -17,6 +17,7 @@
 package com.dream.springframework;
 
 import com.dream.springframework.base.access.AccessLimitAspect;
+import com.dream.springframework.base.component.QueryLocaleResolver;
 import com.dream.springframework.base.exception.BaseExceptionHandlerAdvice;
 import com.dream.springframework.base.util.EventPubUtils;
 import com.dream.springframework.base.util.JacksonUtils;
@@ -44,10 +45,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.i18n.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -101,6 +99,9 @@ public class DreamFrameworkAutoConfiguration implements WebMvcConfigurer {
     @ConditionalOnMissingBean(name = "localeResolver")
     @ConditionalOnExpression("'${dream.framework.i18n.locale-resolver:default}' == 'default'")
     public LocaleResolver defaultLocaleResolver() throws IllegalAccessException {
+        if (!properties.getI18n().isLocaleSwitch()) {
+            return new FixedLocaleResolver(convertLocale(properties.getI18n().getDefaultLocale()));
+        }
         AcceptHeaderLocaleResolver ahlr = new AcceptHeaderLocaleResolver();
         if (properties.getI18n().getDefaultLocale() != null) {
             ahlr.setDefaultLocale(convertLocale(properties.getI18n().getDefaultLocale()));
@@ -109,9 +110,28 @@ public class DreamFrameworkAutoConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * Creates cookie locale resolver.
+     * Creates query parameter locale resolver.
+     * <p>
+     * Uses value of 'lang' query parameter for i18n.
      *
-     * <p>Uses 'locale' cookie value as the locale. If 'locale' cookie not found, then
+     * @return query parameter locale resolver
+     * @throws IllegalAccessException Reflection Exception
+     */
+    @Bean("localeResolver")
+    @ConditionalOnMissingBean(name = "localeResolver")
+    @ConditionalOnProperty(prefix = "dream.framework.i18n", name = "locale-resolver", havingValue = "query")
+    public LocaleResolver queryLocaleResolver() throws IllegalAccessException {
+        QueryLocaleResolver qlr = new QueryLocaleResolver();
+        if (properties.getI18n().getDefaultLocale() != null) {
+            qlr.setDefaultLocale(convertLocale(properties.getI18n().getDefaultLocale()));
+        }
+        return qlr;
+    }
+
+    /**
+     * Creates cookie locale resolver.
+     * <p>
+     * Uses 'locale' cookie value as the locale. If 'locale' cookie not found, then
      * {@link DreamFrameworkProperties.I18n#getDefaultLocale()} will be used.
      * If {@link DreamFrameworkProperties.I18n#getDefaultLocale()} is null, then {@link Locale#getDefault()} will be used as default locale.
      *
@@ -133,8 +153,8 @@ public class DreamFrameworkAutoConfiguration implements WebMvcConfigurer {
 
     /**
      * Creates session locale resolver.
-     *
-     * <p>Uses session to store the locale. If locale not found in session, then
+     * <p>
+     * Uses session to store the locale. If locale not found in session, then
      * {@link DreamFrameworkProperties.I18n#getDefaultLocale()} will be used.
      * If {@link DreamFrameworkProperties.I18n#getDefaultLocale()} is null, then {@link Locale#getDefault()} will be used as default locale.
      *
@@ -144,7 +164,7 @@ public class DreamFrameworkAutoConfiguration implements WebMvcConfigurer {
     @Bean("localeResolver")
     @ConditionalOnMissingBean(name = "localeResolver")
     @ConditionalOnProperty(prefix = "dream.framework.i18n", name = "locale-resolver", havingValue = "session")
-    public LocaleResolver localeResolver() throws IllegalAccessException {
+    public LocaleResolver sessionLocaleResolver() throws IllegalAccessException {
         SessionLocaleResolver slr = new SessionLocaleResolver();
         if (properties.getI18n().getDefaultLocale() != null) {
             slr.setDefaultLocale(convertLocale(properties.getI18n().getDefaultLocale()));
