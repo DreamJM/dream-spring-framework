@@ -45,11 +45,6 @@ public class DreamSwaggerProperties {
     private Class<?>[] ignoredParameterTypes;
 
     /**
-     * Whether Bearer Token is enabled
-     */
-    private boolean bearerTokenEnabled = true;
-
-    /**
      * @return Swagger title
      */
     public String getTitle() {
@@ -104,21 +99,4 @@ public class DreamSwaggerProperties {
     public void setIgnoredParameterTypes(Class<?>[] ignoredParameterTypes) {
         this.ignoredParameterTypes = ignoredParameterTypes;
     }
-
-    /**
-     * @return Whether Bearer Token is enabled
-     */
-    public boolean isBearerTokenEnabled() {
-        return bearerTokenEnabled;
-    }
-
-    /**
-     * If true, Swagger api will add Authorization HTTP Header description
-     *
-     * @param bearerTokenEnabled {@code true} to enable the Bearer Token description
-     */
-    public void setBearerTokenEnabled(boolean bearerTokenEnabled) {
-        this.bearerTokenEnabled = bearerTokenEnabled;
-    }
-
 }

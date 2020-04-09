@@ -16,29 +16,33 @@
 
 package com.dream.springframework.auth.token.model;
 
-import com.dream.springframework.auth.base.BaseAuthUser;
-
 /**
- * Base class for token based authentication user information
+ * Token based authentication user information which conveyed in customized HTTP Header
  *
  * @author DreamJM
  */
-public class TokenAuthUser extends BaseAuthUser {
+public class TokenHeaderAuthUser extends TokenAuthUser {
 
     /**
-     * issued user token
+     * Whether token is needed to refresh
      */
-    private String token;
+    private boolean needRefresh;
 
-    public TokenAuthUser(String uid, String token) {
-        super(uid);
-        this.token = token;
+    public TokenHeaderAuthUser(String uid, String token) {
+        super(uid, token);
     }
 
     /**
-     * @return issued user token
+     * @return whether to refresh token
      */
-    public String getToken() {
-        return token;
+    public boolean isNeedRefresh() {
+        return needRefresh;
+    }
+
+    /**
+     * @param needRefresh true if token needed to refresh
+     */
+    public void setNeedRefresh(boolean needRefresh) {
+        this.needRefresh = needRefresh;
     }
 }

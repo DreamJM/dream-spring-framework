@@ -17,13 +17,15 @@
 package com.dream.springframework.auth.token.component;
 
 import com.dream.springframework.auth.base.service.AuthenticationService;
+import com.dream.springframework.auth.token.DreamTokenHeaderAuthProperties;
 import com.dream.springframework.auth.token.exception.TokenException;
 import com.dream.springframework.auth.token.exception.TokenExpiredException;
-import com.dream.springframework.auth.token.model.TokenAuthUser;
+import com.dream.springframework.auth.token.model.TokenHeaderAuthUser;
 import com.dream.springframework.base.exception.*;
 import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,35 +33,32 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Token based user authentication service.
  * <p>
- * HTTP Authorization header used for conveying the Bearer Token.
- * Example:
- * Authorization: Bearer xxxxxx
+ * HTTP customized header used for conveying the token.
  *
  * @author DreamJM
  */
-public abstract class BaseTokenAuthenticationService<T extends TokenAuthUser> implements AuthenticationService<T> {
+public abstract class BaseTokenHeaderAuthenticationService<T extends TokenHeaderAuthUser> implements AuthenticationService<T> {
 
-    private static final Logger logger = LoggerFactory.getLogger(BaseTokenAuthenticationService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaseTokenHeaderAuthenticationService.class);
 
-    public static final String HEADER_AUTH = "Authorization";
-
-    private static final String BEARER_PREFIX = "Bearer ";
+    @Autowired
+    private DreamTokenHeaderAuthProperties properties;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public T authenticate(HttpServletRequest request, HttpServletResponse response) throws RequestException {
-        String token = request.getHeader(HEADER_AUTH);
+        String token = request.getHeader(properties.getAuthHeader());
         if (Strings.isNullOrEmpty(token)) {
             throw new UnauthorizedException(BaseErrorCode.AUTH_MISSING);
         }
-        if (!token.startsWith(BEARER_PREFIX)) {
-            throw new UnauthorizedException(BaseErrorCode.AUTH_FORMAT_ERROR);
-        }
-        token = token.substring(BEARER_PREFIX.length()).trim();
         try {
-            return parseToken(token);
+            T user = parseToken(token);
+            if (user.isNeedRefresh()) {
+                refreshToken(response, user);
+            }
+            return user;
         } catch (TokenExpiredException ex) {
             throw new UnauthorizedException(BaseErrorCode.AUTH_EXPIRED, ex);
         } catch (TokenException ex) {
@@ -73,6 +72,21 @@ public abstract class BaseTokenAuthenticationService<T extends TokenAuthUser> im
     }
 
     /**
+     * Refresh token for user
+     *
+     * @param response response to set token in header
+     * @param user specified user
+     * @throws RequestException Exception while refreshing token
+     */
+    public void refreshToken(HttpServletResponse response, T user) throws RequestException {
+        String newToken = generateNewToken(user);
+        if (!Strings.isNullOrEmpty(newToken)) {
+            user.setToken(newToken);
+            response.setHeader(properties.getAuthHeader(), newToken);
+        }
+    }
+
+    /**
      * Parses token and Gets the authenticated user information
      *
      * @param token authentication token
@@ -82,4 +96,13 @@ public abstract class BaseTokenAuthenticationService<T extends TokenAuthUser> im
      * @throws RequestException      other request exception
      */
     protected abstract T parseToken(String token) throws TokenException, TokenExpiredException, RequestException;
+
+    /**
+     * Generate new token for user
+     *
+     * @param user User information
+     * @return Mew token
+     * @throws RequestException Exception while generating token
+     */
+    protected abstract String generateNewToken(T user) throws RequestException;
 }

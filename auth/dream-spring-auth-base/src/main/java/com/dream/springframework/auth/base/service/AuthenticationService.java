@@ -20,6 +20,7 @@ import com.dream.springframework.auth.base.BaseAuthUser;
 import com.dream.springframework.base.exception.RequestException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User authentication service.
@@ -34,9 +35,10 @@ public interface AuthenticationService<T extends BaseAuthUser> {
      * Parses http request and composes authenticated user information
      *
      * @param request http request
+     * @param response http response
      * @return authenticated user information
      * @throws RequestException authentication exception
      */
-    T authenticate(HttpServletRequest request) throws RequestException;
+    T authenticate(HttpServletRequest request, HttpServletResponse response) throws RequestException;
 
 }

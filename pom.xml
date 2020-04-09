@@ -38,7 +38,9 @@
         <module>dao/dream-spring-dao</module>
         <module>dao/dream-spring-dao-starter</module>
         <module>auth/dream-spring-auth-base</module>
+        <module>auth/dream-spring-auth-token-base</module>
         <module>auth/dream-spring-auth-token-starter</module>
+        <module>auth/dream-spring-auth-token-header-starter</module>
     </modules>
 
     <dependencyManagement>

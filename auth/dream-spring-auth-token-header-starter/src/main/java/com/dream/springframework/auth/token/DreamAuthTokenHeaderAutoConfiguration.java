@@ -21,7 +21,7 @@ import com.dream.springframework.auth.base.resolver.LoginUserHandlerMethodArgume
 import com.dream.springframework.auth.base.service.AuthorizationProvider;
 import com.dream.springframework.auth.base.service.AuthorizationService;
 import com.dream.springframework.auth.base.service.OrgPermissionService;
-import com.dream.springframework.auth.token.component.BaseTokenAuthenticationService;
+import com.dream.springframework.auth.token.component.BaseTokenHeaderAuthenticationService;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -45,26 +45,27 @@ import java.util.List;
  *
  * @author DreamJM
  */
-@ConditionalOnBean(BaseTokenAuthenticationService.class)
+@ConditionalOnBean(BaseTokenHeaderAuthenticationService.class)
 @Configuration
 @AutoConfigureAfter(name = "com.dream.springframework.base.swagger.DreamSwaggerAutoConfiguration")
-@EnableConfigurationProperties(DreamTokenAuthProperties.class)
-public class DreamAuthTokenAutoConfiguration implements WebMvcConfigurer {
+@EnableConfigurationProperties(DreamTokenHeaderAuthProperties.class)
+public class DreamAuthTokenHeaderAutoConfiguration implements WebMvcConfigurer {
 
-    private DreamTokenAuthProperties properties;
+    private DreamTokenHeaderAuthProperties properties;
 
-    private BaseTokenAuthenticationService<?> authenticationService;
+    private BaseTokenHeaderAuthenticationService<?> authenticationService;
 
     /**
      * @param properties            token authorization properties
      * @param authenticationService token based authentication service
      */
-    public DreamAuthTokenAutoConfiguration(DreamTokenAuthProperties properties, BaseTokenAuthenticationService<?> authenticationService,
-                                           ObjectProvider<Docket> docketProvider) {
+    public DreamAuthTokenHeaderAutoConfiguration(DreamTokenHeaderAuthProperties properties,
+                                                 BaseTokenHeaderAuthenticationService<?> authenticationService,
+                                                 ObjectProvider<Docket> docketProvider) {
         this.properties = properties;
         this.authenticationService = authenticationService;
         docketProvider.ifAvailable(docket -> docket.globalOperationParameters(Collections.singletonList(
-                new ParameterBuilder().name(BaseTokenAuthenticationService.HEADER_AUTH).description("Bearer Token")
+                new ParameterBuilder().name(properties.getAuthHeader()).description("Token Header")
                         .modelRef(new ModelRef("string")).parameterType("header").required(false).build())));
     }
 

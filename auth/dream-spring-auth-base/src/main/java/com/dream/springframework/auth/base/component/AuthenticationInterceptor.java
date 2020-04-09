@@ -96,7 +96,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        BaseAuthUser authUser = authenticationService.authenticate(request);
+        BaseAuthUser authUser = authenticationService.authenticate(request, response);
         if (logger.isDebugEnabled()) {
             logger.debug("Request {} was authorized for user: {}", request.getRequestURI(), authUser.getUid());
         }

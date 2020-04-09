@@ -10,7 +10,7 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <artifactId>dream-spring-auth-token-starter</artifactId>
+    <artifactId>dream-spring-auth-token-header-starter</artifactId>
 
     <dependencies>
         <dependency>
